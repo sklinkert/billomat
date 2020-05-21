@@ -33,31 +33,37 @@ func fromClient(client *Client) ([]byte, error) {
 }
 
 // ClientAdd creates a new client via API
-func (b *Billomat) ClientAdd(client *Client) error {
+func (b *Billomat) ClientAdd(client *Client) (*Client, error) {
+	var createdClient *Client
 	body, err := fromClient(client)
 	if err != nil {
-		return err
+		return createdClient, err
 	}
 
 	url := b.generateURL(apiEndpointClients)
 	httpReq, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(body))
 	if err != nil {
-		return fmt.Errorf("http.NewRequest() failed: %w", err)
+		return createdClient, fmt.Errorf("http.NewRequest() failed: %w", err)
 	}
 	b.setAuthHeader(httpReq)
 
 	httpResp, err := b.httpClient.Do(httpReq)
 	if err != nil {
-		return fmt.Errorf("billomat.httpClient.Do() failed: %w", err)
+		return createdClient, fmt.Errorf("billomat.httpClient.Do() failed: %w", err)
 	}
 	defer httpResp.Body.Close()
 
 	respBody, err := ioutil.ReadAll(httpResp.Body)
 	if err != nil {
-		return fmt.Errorf("error while reading response body: %v", err)
+		return createdClient, fmt.Errorf("error while reading response body: %v", err)
 	}
 	if httpResp.StatusCode != http.StatusCreated {
-		return fmt.Errorf("unexpected HTTP status code %d (body: %q)", httpResp.StatusCode, string(respBody))
+		return createdClient, fmt.Errorf("unexpected HTTP status code %d (body: %q)", httpResp.StatusCode, string(respBody))
 	}
-	return nil
+
+	createdClient, err = toClient(respBody)
+	if err != nil {
+		return createdClient, fmt.Errorf("client created, but cannot parse response: %v (body: %q)", err, string(respBody))
+	}
+	return createdClient, nil
 }
