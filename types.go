@@ -71,8 +71,13 @@ type Offer struct {
 
 // OfferItem represents an item for an offer
 type OfferItem struct {
-	Unit      string  `xml:"unit,omitempty"`
-	UnitPrice float64 `xml:"unit_price,omitempty"`
-	Quantity  int     `xml:"quantity,omitempty"`
-	Title     string  `xml:"title,omitempty"`
+	Unit        string  `xml:"unit,omitempty"`
+	UnitPrice   float64 `xml:"unit_price,omitempty"`
+	Quantity    int     `xml:"quantity,omitempty"`
+	Title       string  `xml:"title,omitempty"`
+	Description string  `xml:"description,omitempty"`
+	ArticleID   int     `xml:"article_id,omitempty"`
+	Optional    int     `xml:"optional,omitempty"`
+	TaxRate     float64 `xml:"tax_rate,omitempty"`
+	TaxName     string  `xml:"tax_name,omitempty"`
 }
