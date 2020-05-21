@@ -42,3 +42,37 @@ type Client struct {
 	Note                string    `xml:"note,omitempty"`
 	Reduction           float64   `xml:"reduction,omitempty"`
 }
+
+// Offer represents an offer for an Client
+type Offer struct {
+	ID           int       `xml:"id,omitempty"`
+	ClientID     int       `xml:"client_id,omitempty"`
+	ContactID    string    `xml:"contact_id,omitempty"`
+	Created      time.Time `xml:"created,omitempty"`
+	Address      string    `xml:"address,omitempty"`
+	NumberPre    string    `xml:"number_pre,omitempty"`
+	Number       int       `xml:"number,omitempty"`
+	NumberLength string    `xml:"number_length,omitempty"`
+	// Date         time.Time `xml:"date,omitempty"`
+	Title        string  `xml:"title,omitempty"`
+	Label        string  `xml:"label,omitempty"`
+	Intro        string  `xml:"intro,omitempty"`
+	Note         string  `xml:"note,omitempty"`
+	Reduction    float64 `xml:"reduction,omitempty"`
+	CountryCode  string  `xml:"country_code,omitempty"`
+	NetGross     string  `xml:"net_gross,omitempty"`
+	Quote        float64 `xml:"quote,omitempty"`
+	ValidityDays int     `xml:"validity_days,omitempty"`
+	// ValidityDate time.Time   `xml:"validity_date,omitempty"`
+	FreeTextID string      `xml:"free_text_id,omitempty"`
+	TemplateID string      `xml:"template_id,omitempty"`
+	OfferItems []OfferItem `xml:"offer-items,omitempty"`
+}
+
+// OfferItem represents an item for an offer
+type OfferItem struct {
+	Unit      string  `xml:"unit,omitempty"`
+	UnitPrice float64 `xml:"unit_price,omitempty"`
+	Quantity  int     `xml:"quantity,omitempty"`
+	Title     string  `xml:"title,omitempty"`
+}

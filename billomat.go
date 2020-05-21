@@ -23,8 +23,11 @@ func (b *Billomat) setAuthHeader(req *http.Request) {
 
 }
 
-func (b *Billomat) generateURL(endpoint string) string {
-	return fmt.Sprintf("https://%s.billomat.net/api/%s", b.billomatID, endpoint)
+func (b *Billomat) generateURL(endpoint string, id int) string {
+	if id == 0 {
+		return fmt.Sprintf("https://%s.billomat.net/api/%s", b.billomatID, endpoint)
+	}
+	return fmt.Sprintf("https://%s.billomat.net/api/%s/%d", b.billomatID, endpoint, id)
 }
 
 // New creates a new object

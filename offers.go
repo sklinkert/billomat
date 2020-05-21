@@ -8,22 +8,22 @@ import (
 	"net/http"
 )
 
-const apiEndpointClients = "clients"
+const apiEndpointOffers = "offers"
 
-func toClient(data []byte) (*Client, error) {
-	var client Client
-	err := xml.Unmarshal(data, &client)
+func toOffer(data []byte) (*Offer, error) {
+	var offer Offer
+	err := xml.Unmarshal(data, &offer)
 	if err != nil {
 		return nil, fmt.Errorf("xml.Marshal() failed: %w", err)
 	}
-	return &client, err
+	return &offer, err
 }
 
-func fromClient(client *Client) ([]byte, error) {
+func fromOffer(offer *Offer) ([]byte, error) {
 	tmp := struct {
-		*Client
-		XMLName struct{} `xml:"client"`
-	}{Client: client}
+		*Offer
+		XMLName struct{} `xml:"offer"`
+	}{Offer: offer}
 
 	data, err := xml.Marshal(tmp)
 	if err != nil {
@@ -32,45 +32,45 @@ func fromClient(client *Client) ([]byte, error) {
 	return data, err
 }
 
-// ClientAdd creates a new client via API
-func (b *Billomat) ClientAdd(client *Client) (*Client, error) {
-	var createdClient *Client
-	body, err := fromClient(client)
+// OfferAdd creates a new offer via API
+func (b *Billomat) OfferAdd(offer *Offer) (*Offer, error) {
+	var createdOffer *Offer
+	body, err := fromOffer(offer)
 	if err != nil {
-		return createdClient, err
+		return createdOffer, err
 	}
 
-	url := b.generateURL(apiEndpointClients, 0)
+	url := b.generateURL(apiEndpointOffers, 0)
 	httpReq, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(body))
 	if err != nil {
-		return createdClient, fmt.Errorf("http.NewRequest() failed: %w", err)
+		return createdOffer, fmt.Errorf("http.NewRequest() failed: %w", err)
 	}
 	b.setAuthHeader(httpReq)
 
 	httpResp, err := b.httpClient.Do(httpReq)
 	if err != nil {
-		return createdClient, fmt.Errorf("billomat.httpClient.Do() failed: %w", err)
+		return createdOffer, fmt.Errorf("billomat.httpOffer.Do() failed: %w", err)
 	}
 	defer httpResp.Body.Close()
 
 	respBody, err := ioutil.ReadAll(httpResp.Body)
 	if err != nil {
-		return createdClient, fmt.Errorf("error while reading response body: %w", err)
+		return createdOffer, fmt.Errorf("error while reading response body: %w", err)
 	}
 	if httpResp.StatusCode != http.StatusCreated {
-		return createdClient, fmt.Errorf("unexpected HTTP status code %d (body: %q)", httpResp.StatusCode, string(respBody))
+		return createdOffer, fmt.Errorf("unexpected HTTP status code %d (body: %q)", httpResp.StatusCode, string(respBody))
 	}
 
-	createdClient, err = toClient(respBody)
+	createdOffer, err = toOffer(respBody)
 	if err != nil {
-		return createdClient, fmt.Errorf("client created, but cannot parse response: %w (body: %q)", err, string(respBody))
+		return createdOffer, fmt.Errorf("offer created, but cannot parse response: %w (body: %q)", err, string(respBody))
 	}
-	return createdClient, nil
+	return createdOffer, nil
 }
 
-// ClientDelete delete an existing Client via API
-func (b *Billomat) ClientDelete(client *Client) error {
-	url := b.generateURL(apiEndpointClients, client.ID)
+// OfferDelete delete an existing offer via API
+func (b *Billomat) OfferDelete(offer *Offer) error {
+	url := b.generateURL(apiEndpointOffers, offer.ID)
 	httpReq, err := http.NewRequest(http.MethodDelete, url, nil)
 	if err != nil {
 		return fmt.Errorf("http.NewRequest() failed: %w", err)
