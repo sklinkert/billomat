@@ -17,9 +17,9 @@ import (
 
 func main() {
 	const apiKey = "abcdefgh"
-  const billomatID = "mycompany"
-  const appID = "12345"
-  const appSecret = "ejkrfierfnebnfuernferufrbef/ejenir"
+	const billomatID = "mycompany"
+	const appID = "12345"
+	const appSecret = "ejkrfierfnebnfuernferufrbef/ejenir"
 	b := billomat.New(billomatID, appID, appSecret, apiKey)
 
 	client := &billomat.Client{
