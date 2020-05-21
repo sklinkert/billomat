@@ -66,7 +66,7 @@ type Offer struct {
 	// ValidityDate time.Time   `xml:"validity_date,omitempty"`
 	FreeTextID string      `xml:"free_text_id,omitempty"`
 	TemplateID string      `xml:"template_id,omitempty"`
-	OfferItems []OfferItem `xml:"offer-items,omitempty"`
+	OfferItems []OfferItem `xml:"offer-items>offer-item,omitempty"`
 }
 
 // OfferItem represents an item for an offer
