@@ -40,7 +40,7 @@ func main() {
 		Phone:       "+49 123456789",
 		Email:       "info@example.com",
 	}
-	createdClient, err := b.ClientAdd(client)
+	createdClient, err := b.CreateClient(client)
 	if err != nil {
 		log.WithError(err).Fatal("Adding client failed")
 	}
@@ -51,9 +51,9 @@ func main() {
 ### Delete Client
 
 ```go
-	if err := b.ClientDelete(createdClient); err != nil {
-		log.WithError(err).Fatal("deleting client failed")
-  }
+if err := b.DeleteClient(createdClient); err != nil {
+	log.WithError(err).Fatal("deleting client failed")
+}
 ```
 
 ### Create Offer
@@ -69,7 +69,7 @@ func main() {
 			},
 		},
 	}
-	createdOffer, err := b.OfferAdd(offer)
+	createdOffer, err := b.CreateOffer(offer)
 	if err != nil {
 		log.WithError(err).Fatal("Adding offer failed")
 	}
@@ -79,8 +79,40 @@ func main() {
 ### Delete Offer
 
 ```go
-	if err := b.OfferDelete(createdOffer); err != nil {
-		log.WithError(err).Fatal("deleting offer failed")
-	}
+if err := b.DeleteOffer(createdOffer); err != nil {
+	log.WithError(err).Fatal("deleting offer failed")
+}
+```
+
+
+
+### Create Article
+
+```go
+article := &billomat.Article{
+  Title: "ETF-Sparplan von ETFs24.de"
+  SalePrice: 9.99,
+  // ...
+}
+createdArticle, err := b.CreateArticle(article)
+if err != nil {
+	log.WithError(err).Fatal("Adding article failed")
+}
+```
+
+### Get Article
+
+```go
+// by article number
+article, err := b.GetArticleByNumber("D-1830-54")
+if err != nil {
+	log.WithError(err).Fatal("getting article failed")
+}
+
+// or by ID
+article, err := b.GetArticleByID(287)
+if err != nil {
+	log.WithError(err).Fatal("getting article failed")
+}
 ```
 
