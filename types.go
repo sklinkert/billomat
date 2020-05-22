@@ -81,3 +81,26 @@ type OfferItem struct {
 	TaxRate     float64 `xml:"tax_rate,omitempty"`
 	TaxName     string  `xml:"tax_name,omitempty"`
 }
+
+// Article represents an article
+type Article struct {
+	ID                    int       `xml:"id,omitempty"`
+	Created               time.Time `xml:"created,omitempty"`
+	NumberPre             string    `xml:"number_pre,omitempty"`
+	Number                int       `xml:"number,omitempty"`
+	NumberLength          string    `xml:"number_length,omitempty"`
+	Title                 string    `xml:"title,omitempty"`
+	Description           string    `xml:"description,omitempty"`
+	UnitID                int       `xml:"unit_id,omitempty"`
+	TaxID                 int       `xml:"tax_id,omitempty"`
+	PurchasePrice         float64   `xml:"purchase_price,omitempty"`
+	PurchasePriceNetGross string    `xml:"purchase_price_net_gross,omitempty"`
+	SalePrice             float64   `xml:"sale_price,omitempty"`
+	SalePrice2            float64   `xml:"sale_price2,omitempty"`
+	SalePrice3            float64   `xml:"sale_price3,omitempty"`
+	SalePrice4            float64   `xml:"sale_price4,omitempty"`
+	SalePrice5            float64   `xml:"sale_price5,omitempty"`
+	CurrencyCode          string    `xml:"currency_code,omitempty"`
+	SupplierID            string    `xml:"supplier_id,omitempty"`
+	Type                  string    `xml:"type,omitempty"`
+}
