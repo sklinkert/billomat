@@ -100,11 +100,11 @@ if err != nil {
 }
 ```
 
-### Get Article
+### Get Article(s)
 
 ```go
 // by article number
-article, err := b.GetArticleByNumber("D-1830-54")
+articles, err := b.GetArticlesByNumber("D-1830-54")
 if err != nil {
 	log.WithError(err).Fatal("getting article failed")
 }
