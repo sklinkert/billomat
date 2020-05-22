@@ -10,13 +10,22 @@ import (
 
 const apiEndpointArticles = "articles"
 
+func toArticles(data []byte) (*[]Article, error) {
+	tmp := struct {
+		Articles []Article `xml:"article"`
+	}{}
+	if err := xml.Unmarshal(data, &tmp); err != nil {
+		return nil, fmt.Errorf("xml.Unmarshal() failed: %w", err)
+	}
+	return &tmp.Articles, nil
+}
+
 func toArticle(data []byte) (*Article, error) {
 	var article Article
-	err := xml.Unmarshal(data, &article)
-	if err != nil {
-		return nil, fmt.Errorf("xml.Marshal() failed: %w", err)
+	if err := xml.Unmarshal(data, &article); err != nil {
+		return nil, fmt.Errorf("xml.Unmarshal() failed: %w", err)
 	}
-	return &article, err
+	return &article, nil
 }
 
 func fromArticle(article *Article) ([]byte, error) {
@@ -38,11 +47,42 @@ func (b *Billomat) GetArticleByID(articleID int) (*Article, error) {
 	return b.getArticle(url)
 }
 
-// GetArticleByNumber fetch article by article number
-func (b *Billomat) GetArticleByNumber(articleNumber string) (*Article, error) {
+// GetArticlesByNumber fetch article by article number
+func (b *Billomat) GetArticlesByNumber(articleNumber string) (*[]Article, error) {
 	url := b.generateURL(apiEndpointArticles, 0)
 	url = fmt.Sprintf("%s?article_number=%s", url, articleNumber)
-	return b.getArticle(url)
+	return b.getArticles(url)
+}
+
+func (b *Billomat) getArticles(url string) (*[]Article, error) {
+	var articles *[]Article
+	httpReq, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		return articles, fmt.Errorf("http.NewRequest() failed: %w", err)
+	}
+	b.setAuthHeader(httpReq)
+
+	httpResp, err := b.httpClient.Do(httpReq)
+	if err != nil {
+		return articles, fmt.Errorf("billomat.httpClient.Do() failed: %w", err)
+	}
+	defer httpResp.Body.Close()
+
+	respBody, err := ioutil.ReadAll(httpResp.Body)
+	if err != nil {
+		return articles, fmt.Errorf("error while reading response body: %w", err)
+	}
+	if httpResp.StatusCode != http.StatusOK {
+		return articles, fmt.Errorf("unexpected HTTP status code %d (body: %q)",
+			httpResp.StatusCode, string(respBody))
+	}
+
+	articles, err = toArticles(respBody)
+	if err != nil {
+		return articles, fmt.Errorf("article created, but cannot parse response: %w (body: %q)",
+			err, string(respBody))
+	}
+	return articles, nil
 }
 
 func (b *Billomat) getArticle(url string) (*Article, error) {

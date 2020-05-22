@@ -14,7 +14,7 @@ func toClient(data []byte) (*Client, error) {
 	var client Client
 	err := xml.Unmarshal(data, &client)
 	if err != nil {
-		return nil, fmt.Errorf("xml.Marshal() failed: %w", err)
+		return nil, fmt.Errorf("xml.Unmarshal() failed: %w", err)
 	}
 	return &client, err
 }

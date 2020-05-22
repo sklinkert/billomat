@@ -14,7 +14,7 @@ func toOffer(data []byte) (*Offer, error) {
 	var offer Offer
 	err := xml.Unmarshal(data, &offer)
 	if err != nil {
-		return nil, fmt.Errorf("xml.Marshal() failed: %w", err)
+		return nil, fmt.Errorf("xml.Unmarshal() failed: %w", err)
 	}
 	return &offer, err
 }
