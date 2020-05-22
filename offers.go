@@ -32,8 +32,8 @@ func fromOffer(offer *Offer) ([]byte, error) {
 	return data, err
 }
 
-// OfferAdd creates a new offer via API
-func (b *Billomat) OfferAdd(offer *Offer) (*Offer, error) {
+// CreateOffer creates a new offer via API
+func (b *Billomat) CreateOffer(offer *Offer) (*Offer, error) {
 	var createdOffer *Offer
 	body, err := fromOffer(offer)
 	if err != nil {
@@ -68,8 +68,8 @@ func (b *Billomat) OfferAdd(offer *Offer) (*Offer, error) {
 	return createdOffer, nil
 }
 
-// OfferDelete delete an existing offer via API
-func (b *Billomat) OfferDelete(offer *Offer) error {
+// DeleteOffer delete an existing offer via API
+func (b *Billomat) DeleteOffer(offer *Offer) error {
 	url := b.generateURL(apiEndpointOffers, offer.ID)
 	httpReq, err := http.NewRequest(http.MethodDelete, url, nil)
 	if err != nil {

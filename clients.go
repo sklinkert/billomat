@@ -32,8 +32,8 @@ func fromClient(client *Client) ([]byte, error) {
 	return data, err
 }
 
-// ClientAdd creates a new client via API
-func (b *Billomat) ClientAdd(client *Client) (*Client, error) {
+// CreateClient creates a new client via API
+func (b *Billomat) CreateClient(client *Client) (*Client, error) {
 	var createdClient *Client
 	body, err := fromClient(client)
 	if err != nil {
@@ -68,8 +68,8 @@ func (b *Billomat) ClientAdd(client *Client) (*Client, error) {
 	return createdClient, nil
 }
 
-// ClientDelete delete an existing Client via API
-func (b *Billomat) ClientDelete(client *Client) error {
+// DeleteClient delete an existing Client via API
+func (b *Billomat) DeleteClient(client *Client) error {
 	url := b.generateURL(apiEndpointClients, client.ID)
 	httpReq, err := http.NewRequest(http.MethodDelete, url, nil)
 	if err != nil {
