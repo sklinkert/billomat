@@ -28,23 +28,23 @@ func main() {
 ### Create Client
 
 ```go
-	client := &billomat.Client{
-		Name:        "Musterfirma",
-		Salutation:  "Herr",
-		FirstName:   "Max",
-		LastName:    "Muster",
-		Street:      "Musterstraße 123",
-		Zip:         "12345",
-		State:       "Bundesland",
-		CountryCode: "DE",
-		Phone:       "+49 123456789",
-		Email:       "info@example.com",
-	}
-	createdClient, err := b.CreateClient(client)
-	if err != nil {
-		log.WithError(err).Fatal("Adding client failed")
-	}
-	log.Infof("Client ID is %d. Created at %v", createdClient.ID, createdClient.Created)
+client := &billomat.Client{
+	Name:        "Musterfirma",
+	Salutation:  "Herr",
+	FirstName:   "Max",
+	LastName:    "Muster",
+	Street:      "Musterstraße 123",
+	Zip:         "12345",
+	State:       "Bundesland",
+	CountryCode: "DE",
+	Phone:       "+49 123456789",
+	Email:       "info@example.com",
+}
+createdClient, err := b.CreateClient(client)
+if err != nil {
+	log.WithError(err).Fatal("Adding client failed")
+}
+log.Infof("Client ID is %d. Created at %v", createdClient.ID, createdClient.Created)
 
 ```
 
@@ -59,21 +59,21 @@ if err := b.DeleteClient(createdClient); err != nil {
 ### Create Offer
 
 ```go
-	offer := &billomat.Offer{
-		ClientID: createdClient.ID,
-		OfferItems: []billomat.OfferItem{
-			{
-				Title:     "Product XYZ",
-				UnitPrice: 18.99,
-				Quantity:  5,
-			},
+offer := &billomat.Offer{
+	ClientID: createdClient.ID,
+	OfferItems: []billomat.OfferItem{
+		{
+			Title:     "Product XYZ",
+			UnitPrice: 18.99,
+			Quantity:  5,
 		},
-	}
-	createdOffer, err := b.CreateOffer(offer)
-	if err != nil {
-		log.WithError(err).Fatal("Adding offer failed")
-	}
-	log.Infof("Offer ID is %d", createdOffer.ID)
+	},
+}
+createdOffer, err := b.CreateOffer(offer)
+if err != nil {
+	log.WithError(err).Fatal("Adding offer failed")
+}
+log.Infof("Offer ID is %d", createdOffer.ID)
 ```
 
 ### Delete Offer
@@ -83,8 +83,6 @@ if err := b.DeleteOffer(createdOffer); err != nil {
 	log.WithError(err).Fatal("deleting offer failed")
 }
 ```
-
-
 
 ### Create Article
 
@@ -106,7 +104,7 @@ if err != nil {
 // by article number
 articles, err := b.GetArticlesByNumber("D-1830-54")
 if err != nil {
-	log.WithError(err).Fatal("getting article failed")
+	log.WithError(err).Fatal("getting articles failed")
 }
 
 // or by ID
